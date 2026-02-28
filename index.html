@@ -307,7 +307,15 @@
         }
 
         const json = JSON.parse(text);
-        addMsg("Razredni AI", json.reply || "Nisam dobio validan odgovor 😄");
+        let reply = "Nisam dobio validan odgovor 😄";
+
+        if (Array.isArray(json) && json.length > 0) {
+          reply = json[0].reply;
+        } else if (json.reply) {
+          reply = json.reply;
+        }
+
+        addMsg("Razredni AI", reply);
         $("chatStatus").textContent = "";
 
     }catch(err){

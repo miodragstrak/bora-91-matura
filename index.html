@@ -1,0 +1,310 @@
+<!doctype html>
+<html lang="sr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>35 godina mature — Generacija 1972 (matura 1991) | Bor</title>
+  <meta name="description" content="Proslava 35 godina mature — Gimnazija Bora Stanković, Bor. Generacija 1972, matura 1991. RSVP + Razredni AI chatbot." />
+  <style>
+    :root { --bg:#0b0f1a; --card:#121a2b; --txt:#e8eefc; --muted:#b8c4e6; --line:#2a3a66; --accent:#38bdf8; }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:radial-gradient(1200px 700px at 10% 10%, #122048 0%, var(--bg) 55%);color:var(--txt);line-height:1.6}
+    a{color:var(--accent);text-decoration:none}
+    .wrap{max-width:980px;margin:0 auto;padding:24px}
+    .nav{position:sticky;top:0;backdrop-filter:blur(10px);background:rgba(11,15,26,.72);border-bottom:1px solid rgba(56,189,248,.25);z-index:10}
+    .navin{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 24px;max-width:980px;margin:0 auto}
+    .brand{font-weight:800;letter-spacing:.3px}
+    .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:1px solid rgba(56,189,248,.45);background:rgba(56,189,248,.12);color:var(--txt);
+      padding:10px 14px;border-radius:12px;cursor:pointer}
+    .btn:hover{transform:translateY(-1px)}
+    .btn.primary{background:rgba(56,189,248,.22);border-color:rgba(56,189,248,.7)}
+    .hero{padding:34px 0 10px}
+    h1{font-size:clamp(28px,4vw,44px);line-height:1.15;margin:0 0 12px}
+    .sub{color:var(--muted);margin:0 0 18px}
+    .grid{display:grid;grid-template-columns:1.2fr .8fr;gap:18px}
+    @media (max-width:880px){.grid{grid-template-columns:1fr}}
+    .card{background:linear-gradient(180deg, rgba(18,26,43,.92), rgba(18,26,43,.68));
+      border:1px solid rgba(56,189,248,.18);border-radius:16px;padding:16px}
+    .kpi{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+    .kpi .item{padding:12px;border:1px solid rgba(42,58,102,.7);border-radius:14px;background:rgba(0,0,0,.12)}
+    .muted{color:var(--muted)}
+    .section{padding:14px 0}
+    .section h2{margin:0 0 8px;font-size:22px}
+    ul{margin:8px 0 0;padding-left:18px}
+    input,select,textarea{width:100%;padding:11px 12px;border-radius:12px;border:1px solid rgba(42,58,102,.8);background:rgba(0,0,0,.18);color:var(--txt)}
+    label{font-size:13px;color:var(--muted)}
+    .row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    @media (max-width:640px){.row{grid-template-columns:1fr}}
+    .small{font-size:13px}
+    .chatbox{display:flex;flex-direction:column;gap:10px}
+    .chatlog{height:260px;overflow:auto;border-radius:14px;border:1px solid rgba(42,58,102,.8);background:rgba(0,0,0,.16);padding:12px}
+    .msg{margin:0 0 10px}
+    .msg b{display:block;font-size:12px;color:var(--muted)}
+    .toast{margin-top:8px;color:#9ae6b4}
+    .err{margin-top:8px;color:#fca5a5}
+    footer{padding:18px 0 28px;color:var(--muted);font-size:13px}
+  </style>
+</head>
+<body>
+  <div class="nav">
+    <div class="navin">
+      <div class="brand">🎓 Bora ’91 — Generacija ’72</div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <a class="btn" href="#rsvp">✅ RSVP</a>
+        <a class="btn primary" href="#chat">🤖 Razredni AI</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <header class="hero">
+      <div class="grid">
+        <div>
+          <h1>35 godina mature — Generacija 1972 (matura 1991)</h1>
+          <p class="sub">Gimnazija “Bora Stanković”, Bor • “Preživeli smo 90-te. Preživećemo i veče sećanja.”</p>
+          <div style="display:flex;gap:10px;flex-wrap:wrap">
+            <a class="btn primary" href="#rsvp">Prijavi dolazak</a>
+            <a class="btn" href="#anegdote">Dodaj anegdotu</a>
+            <a class="btn" href="#chat">Pitaj Razrednog AI</a>
+          </div>
+          <p class="muted small" style="margin-top:12px">
+            *Sajt je javno dostupan da se svi lakše nađu. Ne objavljujemo privatne podatke.
+          </p>
+        </div>
+
+        <div class="card">
+          <h2 style="margin:0 0 10px">Osnovne informacije</h2>
+          <div class="kpi">
+            <div class="item"><div class="muted small">🗓️ Datum</div><div><b id="eventDate">[DD.MM.2026]</b></div></div>
+            <div class="item"><div class="muted small">🕖 Vreme</div><div><b id="eventTime">[19:00]</b></div></div>
+            <div class="item"><div class="muted small">📍 Lokacija</div><div><b id="eventPlace">[Restoran / sala, Bor]</b></div></div>
+            <div class="item"><div class="muted small">📞 Kontakt</div><div><b id="eventContact">[Ime + telefon]</b></div></div>
+          </div>
+          <p class="muted small" style="margin:10px 0 0">
+            Savet: dođi 15 minuta ranije da izbegnemo “A ti si…?” gužvu 😄
+          </p>
+        </div>
+      </div>
+    </header>
+
+    <section class="section card" id="program">
+      <h2>Program večeri</h2>
+      <ul>
+        <li>19:00 — Okupljanje & prvi talas “prepoznavanja”</li>
+        <li>19:30 — Grupna fotka (da posle ne jurimo)</li>
+        <li>20:00 — Večera</li>
+        <li>21:00 — Mini glasanje: “ko se najmanje promenio?”</li>
+        <li>22:00 — Muzika ’90-ih & ples (po želji i po zglobovima)</li>
+      </ul>
+    </section>
+
+    <section class="section grid">
+      <div class="card">
+        <h2>Garderoba</h2>
+        <p class="muted">Smart casual / elegantno opušteno. Udobna obuća je pametnija od ponosa.</p>
+        <ul>
+          <li>✅ Sako + košulja / lepa bluza</li>
+          <li>✅ Udobno, ali svečano</li>
+          <li>❌ Sako iz ’91 (ako ima tragove naftalina — ne rizikuj)</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h2>Piće & hrana</h2>
+        <p class="muted">Predlog “Nostalgija paketa”: vino + mineralna + priča koja počinje sa “Sećaš li se kad…”.</p>
+        <ul>
+          <li>🍷 Vino / pivo / bezalkoholno</li>
+          <li>🥃 Rakijica (odgovorno)</li>
+          <li>🍰 Desert (inflacija porcije, ali ne i raspoloženja)</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section card" id="rsvp">
+      <h2>RSVP — Prijavi dolazak</h2>
+      <p class="muted small">Upiši samo osnovno. Ne skupljamo ništa “više nego što treba”.</p>
+
+      <form id="rsvpForm">
+        <div class="row">
+          <div>
+            <label>Ime</label>
+            <input name="name" required placeholder="npr. Marko" />
+          </div>
+          <div>
+            <label>Dolazim</label>
+            <select name="coming" required>
+              <option value="YES">Da</option>
+              <option value="MAYBE">Možda</option>
+              <option value="NO">Ne</option>
+            </select>
+          </div>
+        </div>
+        <div class="row" style="margin-top:10px">
+          <div>
+            <label>Broj osoba (uključujući tebe)</label>
+            <input name="guests_count" type="number" min="1" value="1" />
+          </div>
+          <div>
+            <label>Napomena (opciono)</label>
+            <input name="note" placeholder="npr. stižem malo kasnije" />
+          </div>
+        </div>
+        <div style="margin-top:12px;display:flex;gap:10px;flex-wrap:wrap">
+          <button class="btn primary" type="submit">✅ Pošalji RSVP</button>
+          <span id="rsvpStatus" class="small muted"></span>
+        </div>
+      </form>
+    </section>
+
+    <section class="section card" id="anegdote">
+      <h2>Dodaj anegdotu (za bota i za arhivu)</h2>
+      <p class="muted small">Ako želiš da se objavi javno, označi “DA”. Bez ličnih podataka trećih lica, molim 😄</p>
+
+      <form id="anecdoteForm">
+        <div class="row">
+          <div>
+            <label>Tvoje ime</label>
+            <input name="author" required placeholder="npr. Jelena" />
+          </div>
+          <div>
+            <label>Da li sme javno?</label>
+            <select name="allowed_public" required>
+              <option value="YES">DA</option>
+              <option value="NO">NE (samo organizatori)</option>
+            </select>
+          </div>
+        </div>
+        <div style="margin-top:10px">
+          <label>Anegdota</label>
+          <textarea name="text" required rows="4" placeholder="npr. ekskurzija, kontrolni, provala..." ></textarea>
+        </div>
+        <div style="margin-top:12px;display:flex;gap:10px;flex-wrap:wrap">
+          <button class="btn" type="submit">📚 Sačuvaj anegdotu</button>
+          <span id="anecdoteStatus" class="small muted"></span>
+        </div>
+      </form>
+    </section>
+
+    <section class="section card" id="faq">
+      <h2>FAQ</h2>
+      <ul>
+        <li><b>Da li je sajt javan?</b> Da — da se svi lakše pronađu.</li>
+        <li><b>Moram li da ostavim telefon?</b> Ne.</li>
+        <li><b>Biće muzike iz ’90-ih?</b> Hoće. I biće “ona pesma”.</li>
+      </ul>
+    </section>
+
+    <section class="section card" id="chat">
+      <h2>🤖 Razredni AI Bora ’91</h2>
+      <p class="muted small">Pitaj za garderobu, piće, program, “ko si bio u razredu”, ili traži neku anegdotu (ako je imamo u bazi).</p>
+
+      <div class="chatbox">
+        <div class="chatlog" id="chatLog"></div>
+        <div class="row">
+          <input id="chatInput" placeholder="Npr. ‘Šta da obučem?’" />
+          <button class="btn primary" id="chatSend">Pošalji</button>
+        </div>
+        <div id="chatStatus" class="small muted"></div>
+      </div>
+    </section>
+
+    <footer>
+      © Generacija ’72 / matura ’91 — Bor • Napravljeno s ljubavlju i malo AI-a 😄
+    </footer>
+  </div>
+
+  <script>
+    // 1) ZAMENI OVE URL-ove (n8n webhook endpoints)
+    const RSVP_WEBHOOK_URL = "https://YOUR_N8N_DOMAIN/webhook/rsvp";
+    const CHAT_WEBHOOK_URL = "https://YOUR_N8N_DOMAIN/webhook/chat";
+    const ANECDOTE_WEBHOOK_URL = "https://YOUR_N8N_DOMAIN/webhook/anecdote";
+
+    // (opciono) session id za chat
+    const sessionId = Math.random().toString(36).slice(2);
+
+    const $ = (id) => document.getElementById(id);
+
+    function addMsg(who, text){
+      const wrap = document.createElement("div");
+      wrap.className = "msg";
+      wrap.innerHTML = `<b>${who}</b><div>${escapeHtml(text).replace(/\n/g,"<br>")}</div>`;
+      $("chatLog").appendChild(wrap);
+      $("chatLog").scrollTop = $("chatLog").scrollHeight;
+    }
+
+    function escapeHtml(s){
+      return s.replace(/[&<>"']/g, (c)=>({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c]));
+    }
+
+    // Init chat welcome
+    addMsg("Razredni AI", "Dobro došao/la! 😄 Pitaj me za program, garderobu, piće ili ‘ko si bio u razredu’.");
+
+    // RSVP submit
+    $("rsvpForm").addEventListener("submit", async (e)=>{
+      e.preventDefault();
+      $("rsvpStatus").textContent = "Šaljem...";
+      const data = Object.fromEntries(new FormData(e.target).entries());
+
+      try{
+        const res = await fetch(RSVP_WEBHOOK_URL, {
+          method:"POST",
+          headers:{"Content-Type":"application/json"},
+          body: JSON.stringify(data)
+        });
+        if(!res.ok) throw new Error("RSVP nije prošao.");
+        $("rsvpStatus").textContent = "Upisano ✅ Vidimo se!";
+        e.target.reset();
+      }catch(err){
+        $("rsvpStatus").textContent = "Greška ❌ Pokušaj ponovo.";
+      }
+    });
+
+    // Anecdote submit
+    $("anecdoteForm").addEventListener("submit", async (e)=>{
+      e.preventDefault();
+      $("anecdoteStatus").textContent = "Šaljem...";
+      const data = Object.fromEntries(new FormData(e.target).entries());
+
+      try{
+        const res = await fetch(ANECDOTE_WEBHOOK_URL, {
+          method:"POST",
+          headers:{"Content-Type":"application/json"},
+          body: JSON.stringify(data)
+        });
+        if(!res.ok) throw new Error("Anegdota nije sačuvana.");
+        $("anecdoteStatus").textContent = "Sačuvano ✅";
+        e.target.reset();
+      }catch(err){
+        $("anecdoteStatus").textContent = "Greška ❌ Pokušaj ponovo.";
+      }
+    });
+
+    // Chat send
+    async function sendChat(){
+      const input = $("chatInput");
+      const message = input.value.trim();
+      if(!message) return;
+      input.value = "";
+      addMsg("Ti", message);
+      $("chatStatus").textContent = "Razredni AI razmišlja...";
+
+      try{
+        const res = await fetch(CHAT_WEBHOOK_URL, {
+          method:"POST",
+          headers:{"Content-Type":"application/json"},
+          body: JSON.stringify({ message, sessionId })
+        });
+        if(!res.ok) throw new Error("Chat greška");
+        const json = await res.json();
+        addMsg("Razredni AI", json.reply || "Uhm… nešto mi se pomešalo kao dnevnik i sveska iz matematike 😄");
+        $("chatStatus").textContent = "";
+      }catch(err){
+        addMsg("Razredni AI", "Ups — trenutno ne mogu do dnevnika. Probaj opet za minut 😄");
+        $("chatStatus").textContent = "";
+      }
+    }
+
+    $("chatSend").addEventListener("click", sendChat);
+    $("chatInput").addEventListener("keydown", (e)=>{ if(e.key==="Enter") sendChat(); });
+  </script>
+</body>
+</html>

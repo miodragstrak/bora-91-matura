@@ -28,7 +28,18 @@ export default async function handler(req, res) {
       return res.status(500).json({ error: "n8n error", raw: text });
     }
 
-    return res.status(200).send(text);
+    // 🔥 KLJUČNI DEO
+    const parsed = JSON.parse(text);
+
+    let reply = "";
+
+    if (Array.isArray(parsed)) {
+      reply = parsed[0]?.reply || "";
+    } else {
+      reply = parsed.reply || "";
+    }
+
+    return res.status(200).json({ reply });
 
   } catch (error) {
     console.error("Proxy error:", error);

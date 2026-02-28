@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>35 godina mature — Generacija 1972 (matura 1991) | Bor</title>
-  <meta name="description" content="Proslava 35 godina mature — Gimnazija Bora Stanković, Bor. Generacija 1972, matura 1991. RSVP + Razredni AI chatbot." />
+  <title>35 godina mature | Bor</title>
+  <meta name="description" content="35 godina mature - 04.07.2026. Restoran Nora Event, Bor. Bendovi Boemi i Bada Bing Band. Informacije o kartama i prijavi." />
   <style>
     :root { --bg:#0b0f1a; --card:#121a2b; --txt:#e8eefc; --muted:#b8c4e6; --line:#2a3a66; --accent:#38bdf8; }
     *{box-sizing:border-box}
@@ -60,8 +60,9 @@
     <header class="hero">
       <div class="grid">
         <div>
-          <h1>35 godina mature — Generacija 1972 (matura 1991)</h1>
-          <p class="sub">Gimnazija “Bora Stanković”, Bor • “Preživeli smo 90-te. Preživećemo i veče sećanja.”</p>
+          <h1>35 godina mature - 04.07.2026.</h1>
+          <h2>Preživeli smo 90-te. Preživećemo i 35 godina mature.</h2>
+          <p class="sub">Generacija 1972 (matura 1991) • Bor • Restoran Nora Event</p>
           <div style="display:flex;gap:10px;flex-wrap:wrap">
             <a class="btn primary" href="#rsvp">Prijavi dolazak</a>
             <a class="btn" href="#anegdote">Dodaj anegdotu</a>
@@ -75,10 +76,25 @@
         <div class="card">
           <h2 style="margin:0 0 10px">Osnovne informacije</h2>
           <div class="kpi">
-            <div class="item"><div class="muted small">🗓️ Datum</div><div><b id="eventDate">[DD.MM.2026]</b></div></div>
-            <div class="item"><div class="muted small">🕖 Vreme</div><div><b id="eventTime">[19:00]</b></div></div>
-            <div class="item"><div class="muted small">📍 Lokacija</div><div><b id="eventPlace">[Restoran / sala, Bor]</b></div></div>
-            <div class="item"><div class="muted small">📞 Kontakt</div><div><b id="eventContact">[Ime + telefon]</b></div></div>
+            <div class="item">
+              <div class="muted small">🗓️ Datum</div>
+              <div><b>04.07.2026.</b></div>
+            </div>
+
+            <div class="item">
+              <div class="muted small">📍 Lokacija</div>
+              <div><b>Restoran Nora Event, Bor</b></div>
+            </div>
+
+            <div class="item">
+              <div class="muted small">💰 Cena karte</div>
+              <div><b>~ 6.200 RSD</b><br><span class="small muted">(zavisi od broja prijavljenih)</span></div>
+            </div>
+
+            <div class="item">
+              <div class="muted small">📸 Fotograf</div>
+              <div><b>Novak</b><br><span class="small muted">300 RSD po slici</span></div>
+            </div>
           </div>
           <p class="muted small" style="margin:10px 0 0">
             Savet: dođi 15 minuta ranije da izbegnemo “A ti si…?” gužvu 😄
@@ -90,11 +106,10 @@
     <section class="section card" id="program">
       <h2>Program večeri</h2>
       <ul>
-        <li>19:00 — Okupljanje & prvi talas “prepoznavanja”</li>
-        <li>19:30 — Grupna fotka (da posle ne jurimo)</li>
-        <li>20:00 — Večera</li>
-        <li>21:00 — Mini glasanje: “ko se najmanje promenio?”</li>
-        <li>22:00 — Muzika ’90-ih & ples (po želji i po zglobovima)</li>
+        <li>🍽️ Osnovni meni (piće neograničeno)</li>
+        <li>🎤 Bend Boemi (Zaječar)</li>
+        <li>🎸 Bada Bing Band (Majdanpek)</li>
+        <li>📸 Fotograf Novak (slike 300 RSD po komadu)</li>
       </ul>
     </section>
 
@@ -120,7 +135,7 @@
     </section>
 
     <section class="section card" id="rsvp">
-      <h2>RSVP — Prijavi dolazak</h2>
+      <h2>RSVP - Prijavi dolazak</h2>
       <p class="muted small">Upiši samo osnovno. Ne skupljamo ništa “više nego što treba”.</p>
 
       <form id="rsvpForm">
@@ -238,27 +253,27 @@
     // Init chat welcome
     addMsg("Razredni AI", "Dobro došao/la! 😄 Pitaj me za program, garderobu, piće ili ‘ko si bio u razredu’.");
 
-    // RSVP submit
-    $("rsvpForm").addEventListener("submit", async (e)=>{
-      e.preventDefault();
-      $("rsvpStatus").textContent = "Šaljem...";
-      const data = Object.fromEntries(new FormData(e.target).entries());
+// RSVP submit
+$("rsvpForm").addEventListener("submit", async (e)=>{
+  e.preventDefault();
+  $("rsvpStatus").textContent = "Šaljem...";
+  const data = Object.fromEntries(new FormData(e.target).entries());
 
-      try{
-        const res = await fetch(RSVP_WEBHOOK_URL, {
-          method:"POST",
-          headers:{"Content-Type":"application/json"},
-          body: JSON.stringify(data)
-        });
-        if(!res.ok) throw new Error("RSVP nije prošao.");
-        $("rsvpStatus").textContent = "Upisano ✅ Vidimo se!";
-        e.target.reset();
-      }catch(err){
-        $("rsvpStatus").textContent = "Greška ❌ Pokušaj ponovo.";
-      }
+  try{
+    const res = await fetch(RSVP_WEBHOOK_URL, {
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body: JSON.stringify(data)
     });
+    if(!res.ok) throw new Error("RSVP nije prošao.");
+    $("rsvpStatus").textContent = "Upisano ✅ Vidimo se!";
+    e.target.reset();
+  }catch(err){
+    $("rsvpStatus").textContent = "Greška ❌ Pokušaj ponovo.";
+  }
+});
 
-    // Anecdote submit
+// Anecdote submit
     $("anecdoteForm").addEventListener("submit", async (e)=>{
       e.preventDefault();
       $("anecdoteStatus").textContent = "Šaljem...";
@@ -307,15 +322,7 @@
         }
 
         const json = JSON.parse(text);
-        let reply = "Nisam dobio validan odgovor 😄";
-
-        if (Array.isArray(json) && json.length > 0) {
-          reply = json[0].reply;
-        } else if (json.reply) {
-          reply = json.reply;
-        }
-
-        addMsg("Razredni AI", reply);
+        addMsg("Razredni AI", json.reply || "Nisam dobio validan odgovor 😄");
         $("chatStatus").textContent = "";
 
     }catch(err){

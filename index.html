@@ -280,27 +280,41 @@
 
     // Chat send
     async function sendChat(){
-      const input = $("chatInput");
-      const message = input.value.trim();
-      if(!message) return;
-      input.value = "";
-      addMsg("Ti", message);
-      $("chatStatus").textContent = "Razredni AI razmišlja...";
+    const input = $("chatInput");
+    const message = input.value.trim();
+    if(!message) return;
 
-      try{
+    input.value = "";
+    addMsg("Ti", message);
+    $("chatStatus").textContent = "Razredni AI razmišlja...";
+
+    try{
         const res = await fetch(CHAT_WEBHOOK_URL, {
-          method:"POST",
-          headers:{"Content-Type":"application/json"},
-          body: JSON.stringify({ message, sessionId })
+        method:"POST",
+        headers:{
+            "Content-Type":"application/json"
+        },
+        body: JSON.stringify({ message, sessionId })
         });
-        if(!res.ok) throw new Error("Chat greška");
-        const json = await res.json();
-        addMsg("Razredni AI", json.reply || "Uhm… nešto mi se pomešalo kao dnevnik i sveska iz matematike 😄");
+
+        console.log("Status:", res.status);
+
+        const text = await res.text();
+        console.log("Raw response:", text);
+
+        if(!res.ok){
+        throw new Error("HTTP error " + res.status);
+        }
+
+        const json = JSON.parse(text);
+        addMsg("Razredni AI", json.reply || "Nisam dobio validan odgovor 😄");
         $("chatStatus").textContent = "";
-      }catch(err){
+
+    }catch(err){
+        console.error("Chat error:", err);
         addMsg("Razredni AI", "Ups — trenutno ne mogu do dnevnika. Probaj opet za minut 😄");
         $("chatStatus").textContent = "";
-      }
+    }
     }
 
     $("chatSend").addEventListener("click", sendChat);

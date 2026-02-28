@@ -51,7 +51,7 @@
       <div class="brand">🎓 Bora ’91 — Generacija ’72</div>
       <div style="display:flex;gap:10px;flex-wrap:wrap">
         <a class="btn" href="#rsvp">✅ RSVP</a>
-        <a class="btn primary" href="#chat">🤖 Razredni AI</a>
+        <a class="btn primary" href="#chat">🤖 AI redar</a>
       </div>
     </div>
   </div>
@@ -209,7 +209,7 @@
     </section>
 
     <section class="section card" id="chat">
-      <h2>🤖 Razredni AI Bora ’91</h2>
+      <h2>🤖 AI redar</h2>
       <p class="muted small">Pitaj za garderobu, piće, program, “ko si bio u razredu”, ili traži neku anegdotu (ako je imamo u bazi).</p>
 
       <div class="chatbox">
@@ -251,7 +251,7 @@
     }
 
     // Init chat welcome
-    addMsg("Razredni AI", "Dobro došao/la! 😄 Pitaj me za program, garderobu, piće ili ‘ko si bio u razredu’.");
+    addMsg("AI redar", "Dobro došao/la! 😄 Pitaj me za program, garderobu, piće ili ‘ko si bio u razredu’.");
 
 // RSVP submit
 $("rsvpForm").addEventListener("submit", async (e)=>{
@@ -301,7 +301,7 @@ $("rsvpForm").addEventListener("submit", async (e)=>{
 
     input.value = "";
     addMsg("Ti", message);
-    $("chatStatus").textContent = "Razredni AI razmišlja...";
+    $("chatStatus").textContent = "AI redar razmišlja...";
 
     try{
         const res = await fetch(CHAT_WEBHOOK_URL, {
@@ -322,12 +322,12 @@ $("rsvpForm").addEventListener("submit", async (e)=>{
         }
 
         const json = JSON.parse(text);
-        addMsg("Razredni AI", json.reply || "Nisam dobio validan odgovor 😄");
+        addMsg("AI redar", json.reply || "Nisam dobio validan odgovor 😄");
         $("chatStatus").textContent = "";
 
     }catch(err){
         console.error("Chat error:", err);
-        addMsg("Razredni AI", "Ups — trenutno ne mogu do dnevnika. Probaj opet za minut 😄");
+        addMsg("AI redar", "Ups — trenutno ne mogu do dnevnika. Probaj opet za minut 😄");
         $("chatStatus").textContent = "";
     }
     }

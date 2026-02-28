@@ -1,47 +1,37 @@
 export default async function handler(req, res) {
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
-
-  if (req.method === "OPTIONS") {
-    return res.status(200).end();
-  }
-
-  if (req.method !== "POST") {
-    return res.status(405).json({ error: "Method not allowed" });
-  }
-
   try {
+    if (req.method !== "POST") {
+      return res.status(405).json({ error: "Method not allowed" });
+    }
+
+    const body = await new Promise((resolve) => {
+      let data = "";
+      req.on("data", chunk => data += chunk);
+      req.on("end", () => resolve(data));
+    });
+
+    const parsedBody = JSON.parse(body);
+
     const response = await fetch(
       "https://mstrak.app.n8n.cloud/webhook/chat",
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(req.body)
+        body: JSON.stringify(parsedBody)
       }
     );
 
     const text = await response.text();
-    const parsed = JSON.parse(text);
 
-      let reply = "Razredni AI se zbunio 😄";
+    if (!response.ok) {
+      console.error("n8n error:", text);
+      return res.status(500).json({ error: "n8n error", raw: text });
+    }
 
-      if (Array.isArray(parsed) && parsed.length > 0) {
-        const first = parsed[0];
-
-        if (first.output && first.output.length > 0) {
-          const content = first.output[0].content;
-
-          if (Array.isArray(content) && content.length > 0) {
-            reply = content[0].text || reply;
-          }
-        }
-      }
-
-  return res.status(200).json({ reply });
+    return res.status(200).send(text);
 
   } catch (error) {
     console.error("Proxy error:", error);
-    return res.status(500).json({ error: "Proxy failed" });
+    return res.status(500).json({ error: "Proxy failed", details: error.message });
   }
 }

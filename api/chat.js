@@ -24,9 +24,14 @@ export default async function handler(req, res) {
     const text = await response.text();
     const parsed = JSON.parse(text);
 
-    const reply =
-      parsed.output?.[0]?.content?.[0]?.text ||
-      "Razredni AI se zbunio 😄";
+    let reply = "Razredni AI se zbunio 😄";
+
+    if (parsed.output && parsed.output.length > 0) {
+    const content = parsed.output[0].content;
+    if (Array.isArray(content) && content.length > 0) {
+        reply = content[0].text || content[0];
+    }
+    }
 
     return res.status(200).json({ reply });
 

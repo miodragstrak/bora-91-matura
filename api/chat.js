@@ -22,18 +22,25 @@ export default async function handler(req, res) {
     );
 
     const text = await response.text();
-    const parsed = JSON.parse(text);
+  const parsed = JSON.parse(text);
 
-    let reply = "Razredni AI se zbunio 😄";
+  let reply = "Razredni AI se zbunio 😄";
 
-    if (parsed.output && parsed.output.length > 0) {
-    const content = parsed.output[0].content;
-    if (Array.isArray(content) && content.length > 0) {
-        reply = content[0].text || content[0];
+  if (parsed.output && parsed.output.length > 0) {
+    const first = parsed.output[0];
+
+    if (first.content && Array.isArray(first.content) && first.content.length > 0) {
+      const item = first.content[0];
+
+      if (typeof item === "string") {
+        reply = item;
+      } else if (item.text) {
+        reply = item.text;
+      }
     }
-    }
+  }
 
-    return res.status(200).json({ reply });
+  return res.status(200).json({ reply });
 
   } catch (error) {
     console.error("Proxy error:", error);

@@ -122,7 +122,7 @@
         <li><b>Kristina Tina Tojagić</b> – Elektro-mašinska škola</li>
         <li><b>Sanja Protić</b> – Pravno-birotehnička škola</li>
         <li><b>Jasna Tomić</b> – Ekonomska škola</li>
-        <li><b>Sanja Ćirak</b> – Rudarsko-metalurška škola</li>
+        <li><b>Sanja Cirak</b> – Rudarsko-metalurška škola</li>
       </ul>
 
       <p class="muted small">
@@ -170,6 +170,17 @@
           <div>
             <label>Ime</label>
             <input name="name" required placeholder="npr. Marko" />
+          </div>
+          <div>
+            <label>Škola</label>
+            <select name="school" required>
+              <option value="">Izaberi školu</option>
+              <option value="PM">Prirodno-matematička škola</option>
+              <option value="EM">Elektro-mašinska škola</option>
+              <option value="PB">Pravno-birotehnička škola</option>
+              <option value="EK">Ekonomska škola</option>
+              <option value="RM">Rudarsko-metalurška škola</option>
+            </select>
           </div>
           <div>
             <label>Dolazim</label>
@@ -275,12 +286,20 @@
 
   <script>
     // 1) ZAMENI OVE URL-ove (n8n webhook endpoints)
-    const RSVP_WEBHOOK_URL = "/api/rsvp.js";
+    const RSVP_WEBHOOK_URL = "/api/rsvp";
     const CHAT_WEBHOOK_URL = "/api/chat";
-    const ANECDOTE_WEBHOOK_URL = "/api/anecdote.js";
+    const ANECDOTE_WEBHOOK_URL = "/api/anecdote";
 
     // (opciono) session id za chat
     const sessionId = Math.random().toString(36).slice(2);
+
+    const schoolOrganizers = {
+      PM: "Violeta Šćekić ili Vesna Jakšić",
+      EM: "Kristina Tina Tojagić",
+      PB: "Sanja Protić",
+      EK: "Jasna Tomić",
+      RM: "Sanja Cirak"
+    };
 
     const $ = (id) => document.getElementById(id);
 
@@ -302,7 +321,10 @@
 // RSVP submit
 $("rsvpForm").addEventListener("submit", async (e)=>{
   e.preventDefault();
+
   $("rsvpStatus").textContent = "Šaljem...";
+
+  // 1️⃣ prvo uzmi podatke
   const data = Object.fromEntries(new FormData(e.target).entries());
 
   try{
@@ -311,9 +333,18 @@ $("rsvpForm").addEventListener("submit", async (e)=>{
       headers:{"Content-Type":"application/json"},
       body: JSON.stringify(data)
     });
+
     if(!res.ok) throw new Error("RSVP nije prošao.");
-    $("rsvpStatus").textContent = "Upisano ✅ Vidimo se!";
+
+    // 2️⃣ tek sada prikaži organizatora
+    const organizer = schoolOrganizers[data.school] || "organizatoru";
+
+    $("rsvpStatus").innerHTML = 
+      `Upisano ✅<br>
+       Obrati se: <b>${organizer}</b>`;
+
     e.target.reset();
+
   }catch(err){
     $("rsvpStatus").textContent = "Greška ❌ Pokušaj ponovo.";
   }

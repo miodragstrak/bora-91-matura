@@ -128,7 +128,7 @@
     <div class="navin">
       <div class="brand">🎓 35 godina mature | Bor</div>
       <div style="display:flex;gap:10px;flex-wrap:wrap">
-        <a class="btn" href="#rsvp">✅ RSVP</a>
+        <a class="btn" href="#rsvp">✅ Dolazim! (prijavljivanje)</a>
         <a class="btn primary" href="#chat">🤖 AI redar</a>
         <a class="btn primary" href="#moda">✨ Moda</a>
       </div>
@@ -181,6 +181,82 @@
         </div>
       </div>
     </header>
+
+        <section class="section card" id="rsvp">
+      <h2>🎤 Hajde da se prebrojimo (da vas čujem!)</h2>
+      <p class="muted small">Ne kupujete kartu ovde - samo da vidimo koliko nas okvirno dolazi. Karte će biti kod fotografa Novaka.</p>
+
+      <form id="rsvpForm">
+        <div class="row">
+          <div>
+            <label>Ime i prezime</label>
+            <input name="name" required placeholder="npr. Marko Marković" />
+          </div>
+          <div>
+            <label>Škola</label>
+            <select name="school" required>
+              <option value="">Izaberi školu</option>
+              <option value="PM">Prirodno-matematička škola</option>
+              <option value="EM">Elektro-mašinska škola</option>
+              <option value="PB">Pravno-birotehnička škola</option>
+              <option value="EK">Ekonomska škola</option>
+              <option value="RM">Rudarsko-metalurška škola</option>
+              <option value="OSTALO">Ostalo</option>
+            </select>
+          </div>
+
+          <div>
+          <label>Stepen</label>
+          <select name="degree" required>
+          <option value="">Izaberi</option>
+          <option value="III">III stepen</option>
+          <option value="IV">IV stepen</option>
+          </select>
+          </div>
+
+          <div>
+          <label>Odeljenje</label>
+          <select name="class_number" required>
+          <option value="">Izaberi</option>
+          <option>1</option>
+          <option>2</option>
+          <option>3</option>
+          <option>4</option>
+          <option>5</option>
+          <option>6</option>
+          <option>7</option>
+          <option>8</option>
+          <option>9</option>
+          <option>10</option>
+          </select>
+          </div>
+          
+          <div>
+            <label>Dolazim</label>
+            <select name="coming" required>
+              <option value="YES">Da</option>
+              <option value="MAYBE">Možda</option>
+              <option value="NO">Ne</option>
+            </select>
+          </div>
+        </div>
+        <div class="row" style="margin-top:10px">
+          <div>
+            <label>Broj osoba (uključujući tebe)</label>
+            <input name="guests_count" type="number" min="1" value="1" />
+          </div>
+          <div>
+            <label>Napomena (opciono)</label>
+            <input name="note" placeholder="npr. stižem malo kasnije" />
+          </div>
+        </div>
+        <div style="margin-top:12px;display:flex;gap:10px;flex-wrap:wrap">
+          <button class="btn primary" type="submit">✅ Evidentiraj me</button>
+          <span id="rsvpStatus" class="small muted"></span>
+        </div>
+      </form>
+    </section>
+
 
     <section class="section">
     <h2>🎵 Hit dana</h2>
@@ -306,53 +382,6 @@
 
       </div>
 
-    </section>
-
-    <section class="section card" id="rsvp">
-      <h2>RSVP - Prijavi dolazak</h2>
-      <p class="muted small">Upiši samo osnovno. Ne skupljamo ništa “više nego što treba”.</p>
-
-      <form id="rsvpForm">
-        <div class="row">
-          <div>
-            <label>Ime</label>
-            <input name="name" required placeholder="npr. Marko" />
-          </div>
-          <div>
-            <label>Škola</label>
-            <select name="school" required>
-              <option value="">Izaberi školu</option>
-              <option value="PM">Prirodno-matematička škola</option>
-              <option value="EM">Elektro-mašinska škola</option>
-              <option value="PB">Pravno-birotehnička škola</option>
-              <option value="EK">Ekonomska škola</option>
-              <option value="RM">Rudarsko-metalurška škola</option>
-            </select>
-          </div>
-          <div>
-            <label>Dolazim</label>
-            <select name="coming" required>
-              <option value="YES">Da</option>
-              <option value="MAYBE">Možda</option>
-              <option value="NO">Ne</option>
-            </select>
-          </div>
-        </div>
-        <div class="row" style="margin-top:10px">
-          <div>
-            <label>Broj osoba (uključujući tebe)</label>
-            <input name="guests_count" type="number" min="1" value="1" />
-          </div>
-          <div>
-            <label>Napomena (opciono)</label>
-            <input name="note" placeholder="npr. stižem malo kasnije" />
-          </div>
-        </div>
-        <div style="margin-top:12px;display:flex;gap:10px;flex-wrap:wrap">
-          <button class="btn primary" type="submit">✅ Pošalji RSVP</button>
-          <span id="rsvpStatus" class="small muted"></span>
-        </div>
-      </form>
     </section>
 
     <section class="section card" id="anegdote">
@@ -488,7 +517,7 @@ $("rsvpForm").addEventListener("submit", async (e)=>{
 
     $("rsvpStatus").innerHTML = 
       `Upisano ✅<br>
-       Obrati se: <b>${organizer}</b>`;
+        Za više detalja obrati se: <b>${organizer}</b>`;
 
     e.target.reset();
 

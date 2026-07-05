@@ -16,6 +16,8 @@
   const uploadStatus = document.getElementById("uploadStatus");
   const uploadButton = document.getElementById("uploadSubmit");
 
+  let activeGalleryRequestId = 0;
+
   function escapeHtml(value) {
     return String(value || "").replace(/[&<>"']/g, function (char) {
       return {
@@ -119,6 +121,8 @@
       return;
     }
 
+    const requestId = ++activeGalleryRequestId;
+
     showGalleryState("loading");
     galleryGrid.innerHTML = "";
 
@@ -133,6 +137,11 @@
       }
 
       const photos = await response.json();
+
+      if (requestId !== activeGalleryRequestId) {
+        return;
+      }
+
       if (!Array.isArray(photos) || photos.length === 0) {
         showGalleryState("empty");
         return;
@@ -146,6 +155,10 @@
       galleryGrid.appendChild(fragment);
       showGalleryState("ready");
     } catch (_error) {
+      if (requestId !== activeGalleryRequestId) {
+        return;
+      }
+
       showGalleryState("error");
     }
   }

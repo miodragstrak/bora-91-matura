@@ -15,6 +15,10 @@
   const uploadProgressText = document.getElementById("uploadProgressText");
   const uploadStatus = document.getElementById("uploadStatus");
   const uploadButton = document.getElementById("uploadSubmit");
+  const adminBanner = document.getElementById("adminBanner");
+
+  const adminToken = new URLSearchParams(window.location.search).get("admin") || "";
+  const isAdminMode = Boolean(adminToken);
 
   let activeGalleryRequestId = 0;
 
@@ -77,6 +81,30 @@
     }
   }
 
+  async function deletePhoto(fileName) {
+    const response = await fetch("/api/photo", {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        file: fileName,
+        admin: adminToken
+      })
+    });
+
+    let payload = {};
+    try {
+      payload = await response.json();
+    } catch (_error) {
+      payload = {};
+    }
+
+    if (!response.ok) {
+      throw new Error(payload.error || "Brisanje nije uspelo.");
+    }
+  }
+
   function createPhotoCard(photo) {
     const card = document.createElement("article");
     card.className = "photo-card";
@@ -109,6 +137,39 @@
     meta.appendChild(author);
     meta.appendChild(comment);
     meta.appendChild(date);
+
+    if (isAdminMode) {
+      const deleteButton = document.createElement("button");
+      deleteButton.type = "button";
+      deleteButton.className = "btn photo-delete-btn";
+      deleteButton.textContent = "DELETE";
+
+      deleteButton.addEventListener("click", async function () {
+        if (!photo?.file) {
+          window.alert("Nedostaje naziv fajla za brisanje.");
+          return;
+        }
+
+        const isConfirmed = window.confirm("Da li ste sigurni?");
+        if (!isConfirmed) {
+          return;
+        }
+
+        deleteButton.disabled = true;
+        deleteButton.textContent = "Brišem...";
+
+        try {
+          await deletePhoto(photo.file);
+          await loadGallery();
+        } catch (error) {
+          window.alert(error.message || "Brisanje nije uspelo.");
+          deleteButton.disabled = false;
+          deleteButton.textContent = "DELETE";
+        }
+      });
+
+      meta.appendChild(deleteButton);
+    }
 
     card.appendChild(image);
     card.appendChild(meta);
@@ -314,6 +375,10 @@
   }
 
   function initPhotoGallery() {
+    if (adminBanner) {
+      adminBanner.hidden = !isAdminMode;
+    }
+
     bindModalActions();
     bindUploadForm();
     loadGallery();

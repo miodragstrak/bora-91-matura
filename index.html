@@ -127,6 +127,8 @@
     .photo-author{margin:0;font-weight:700}
     .photo-comment{margin:6px 0 0;color:var(--muted)}
     .photo-date{margin:8px 0 0;font-size:12px;color:#94a9da}
+    .photo-delete-btn{margin-top:10px;background:rgba(239,68,68,.16);border-color:rgba(239,68,68,.48);color:#fee2e2}
+    .photo-delete-btn:hover{background:rgba(239,68,68,.26)}
     .gallery-state{display:flex;align-items:center;gap:10px;color:var(--muted);min-height:34px}
     .spinner{width:20px;height:20px;border-radius:999px;border:2px solid rgba(184,196,230,.25);border-top-color:var(--accent);animation:spin .8s linear infinite}
     @keyframes spin{to{transform:rotate(360deg)}}
@@ -147,6 +149,7 @@
     .modal-open{overflow:hidden}
     .album-hero-title{font-size:clamp(34px,5vw,56px)}
     .album-tag{display:inline-flex;align-items:center;gap:8px;padding:7px 12px;border-radius:999px;background:rgba(56,189,248,.12);border:1px solid rgba(56,189,248,.24);color:var(--txt);font-size:13px;font-weight:700;letter-spacing:.2px;margin-bottom:14px}
+    .admin-banner{margin:0 0 12px;padding:10px 12px;border-radius:12px;border:1px solid rgba(250,204,21,.46);background:rgba(250,204,21,.12);color:#fde68a;font-size:13px;font-weight:700}
     .album-cta{padding:14px 18px;font-size:16px;border-radius:14px}
     .thanks-card{background:linear-gradient(135deg, rgba(56,189,248,.14), rgba(18,26,43,.92));border:1px solid rgba(56,189,248,.2)}
     .thanks-card p{margin:8px 0 0;color:var(--muted)}
@@ -229,6 +232,7 @@
       <h2>📸 Foto galerija</h2>
       <p class="muted small">Najnovije fotografije su prvo prikazane. Dodaj uspomenu odmah ispod zaglavlja.</p>
       <div class="gallery-shell">
+        <div id="adminBanner" class="admin-banner" hidden>Admin režim je aktivan. Dostupno je brisanje fotografija.</div>
         <div class="gallery-actions">
           <div class="small muted">Dodaj fotografiju i pomogni da zajedno sačuvamo uspomene na ovo posebno veče.</div>
           <button class="btn primary album-cta" id="openUploadModal" type="button">➕ Dodaj fotografiju</button>

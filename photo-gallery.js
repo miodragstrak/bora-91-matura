@@ -50,9 +50,29 @@
       return;
     }
 
-    gallerySpinner.hidden = state !== "loading";
-    galleryEmpty.hidden = state !== "empty";
-    galleryError.hidden = state !== "error";
+    gallerySpinner.hidden = true;
+    galleryEmpty.hidden = true;
+    galleryError.hidden = true;
+    galleryGrid.hidden = true;
+
+    if (state === "loading") {
+      gallerySpinner.hidden = false;
+      return;
+    }
+
+    if (state === "empty") {
+      galleryEmpty.hidden = false;
+      return;
+    }
+
+    if (state === "error") {
+      galleryError.hidden = false;
+      return;
+    }
+
+    if (state === "ready") {
+      galleryGrid.hidden = false;
+    }
   }
 
   function createPhotoCard(photo) {

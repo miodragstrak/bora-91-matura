@@ -114,6 +114,37 @@
       border-radius:12px;
     }
 
+    .gallery-actions{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin:10px 0 14px}
+    .gallery-grid{column-count:3;column-gap:14px}
+    @media (max-width:900px){.gallery-grid{column-count:2}}
+    @media (max-width:620px){.gallery-grid{column-count:1}}
+    .photo-card{break-inside:avoid;margin:0 0 14px;border:1px solid rgba(56,189,248,.18);border-radius:16px;overflow:hidden;
+      background:linear-gradient(180deg, rgba(18,26,43,.95), rgba(18,26,43,.78));transition:transform .22s ease, box-shadow .22s ease}
+    .photo-card:hover{transform:translateY(-2px);box-shadow:0 14px 28px rgba(0,0,0,.32)}
+    .photo-img{display:block;width:100%;height:auto}
+    .photo-meta{padding:11px 12px 12px}
+    .photo-author{margin:0;font-weight:700}
+    .photo-comment{margin:6px 0 0;color:var(--muted)}
+    .photo-date{margin:8px 0 0;font-size:12px;color:#94a9da}
+    .gallery-state{display:flex;align-items:center;gap:10px;color:var(--muted);min-height:34px}
+    .spinner{width:20px;height:20px;border-radius:999px;border:2px solid rgba(184,196,230,.25);border-top-color:var(--accent);animation:spin .8s linear infinite}
+    @keyframes spin{to{transform:rotate(360deg)}}
+
+    .modal{position:fixed;inset:0;background:rgba(4,8,18,.72);backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;padding:20px;z-index:40}
+    .modal[hidden]{display:none}
+    .modal-card{width:min(560px,100%);max-height:88vh;overflow:auto;background:linear-gradient(180deg, rgba(18,26,43,.98), rgba(18,26,43,.92));
+      border:1px solid rgba(56,189,248,.26);border-radius:18px;padding:16px}
+    .modal-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:10px}
+    .xbtn{border:none;background:transparent;color:var(--muted);font-size:22px;line-height:1;cursor:pointer;padding:2px 6px;border-radius:8px}
+    .xbtn:hover{background:rgba(255,255,255,.08);color:#fff}
+    .checkbox-row{display:flex;align-items:flex-start;gap:10px;margin-top:10px}
+    .checkbox-row input{width:auto;margin-top:3px}
+    .checkbox-row label{font-size:14px;color:var(--txt)}
+    .progress-wrap{margin-top:12px}
+    .progress-wrap progress{width:100%;height:10px;accent-color:var(--accent)}
+    .progress-meta{display:flex;justify-content:space-between;align-items:center;font-size:12px;color:var(--muted);margin-top:4px}
+    .modal-open{overflow:hidden}
+
     footer{padding:18px 0 28px;color:var(--muted);font-size:13px}
 
     @media (max-width: 700px){
@@ -130,6 +161,7 @@
       <div style="display:flex;gap:10px;flex-wrap:wrap">
         <a class="btn" href="#rsvp">✅ Dolazim! (prijavljivanje)</a>
         <a class="btn primary" href="#chat">🤖 AI redar</a>
+        <a class="btn" href="#galerija">📸 Album</a>
         <a class="btn primary" href="#moda">✨ Moda</a>
       </div>
     </div>
@@ -505,10 +537,82 @@
       </div>
     </section>
 
+    <section class="section card" id="galerija">
+      <h2>📸 Reunion foto album</h2>
+      <p class="muted small">Podeli fotografiju sa okupljanja i ostavi kratku poruku uz sliku.</p>
+      <div class="gallery-actions">
+        <div class="small muted">Najnovije fotografije su na vrhu galerije.</div>
+        <button class="btn primary" id="openUploadModal" type="button">➕ Dodaj fotografiju</button>
+      </div>
+
+      <div id="gallerySpinner" class="gallery-state">
+        <span class="spinner" aria-hidden="true"></span>
+        <span>Učitavam galeriju...</span>
+      </div>
+
+      <div id="galleryEmpty" class="gallery-state" hidden>
+        <span>Još nema objavljenih fotografija. Budi prvi koji dodaje uspomenu.</span>
+      </div>
+
+      <div id="galleryError" class="gallery-state" hidden>
+        <span>Galerija trenutno nije dostupna. Pokušaj ponovo za minut.</span>
+      </div>
+
+      <div id="galleryGrid" class="gallery-grid" aria-live="polite"></div>
+    </section>
+
     <footer>
       © Generacija ’72 / matura ’91 — Bor • Napravljeno s ljubavlju i malo AI-a 😄
     </footer>
   </div>
+
+  <div id="uploadModal" class="modal" hidden>
+    <div class="modal-card">
+      <div class="modal-head">
+        <h3 style="margin:0">Dodaj fotografiju u album</h3>
+        <button class="xbtn" id="closeUploadModal" type="button" aria-label="Zatvori">×</button>
+      </div>
+
+      <form id="photoUploadForm">
+        <div class="row">
+          <div>
+            <label for="photoAuthor">Ime</label>
+            <input id="photoAuthor" name="author" required maxlength="120" placeholder="npr. Miodrag" />
+          </div>
+          <div>
+            <label for="photoFile">Fotografija</label>
+            <input id="photoFile" name="photo" required type="file" accept="image/jpeg,image/png,image/webp" />
+          </div>
+        </div>
+
+        <div style="margin-top:10px">
+          <label for="photoComment">Komentar (opciono)</label>
+          <textarea id="photoComment" name="comment" rows="3" maxlength="500" placeholder="npr. Odlična atmosfera!"></textarea>
+        </div>
+
+        <div class="checkbox-row">
+          <input id="photoConsent" name="consent" value="true" type="checkbox" required />
+          <label for="photoConsent">I confirm that I have permission to publish this photo.</label>
+        </div>
+
+        <div id="uploadProgressWrap" class="progress-wrap" hidden>
+          <progress id="uploadProgressBar" max="100" value="0"></progress>
+          <div class="progress-meta">
+            <span>Napredak slanja</span>
+            <span id="uploadProgressText">0%</span>
+          </div>
+        </div>
+
+        <div style="display:flex;gap:10px;margin-top:14px;flex-wrap:wrap">
+          <button id="uploadSubmit" class="btn primary" type="submit">⬆ Upload</button>
+          <button id="uploadCancel" class="btn" type="button">Otkaži</button>
+          <span id="uploadStatus" class="small muted"></span>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="/photo-gallery.js" defer></script>
 
   <script>
     // 1) ZAMENI OVE URL-ove (n8n webhook endpoints)

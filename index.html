@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>35 godina mature | Bor</title>
-  <meta name="description" content="35 godina mature - 04.07.2026. Restoran Nora Event, Bor. Bendovi Boemi i Bada Bing Band. Informacije o kartama i prijavi." />
+  <title>Digitalni album Generacije '72 | Bor</title>
+  <meta name="description" content="Digitalni album Generacije '72 — reunion photo album, anegdote i muzika generacije, sve na jednom mestu." />
   <style>
     :root { --bg:#0b0f1a; --card:#121a2b; --txt:#e8eefc; --muted:#b8c4e6; --line:#2a3a66; --accent:#38bdf8; }
     *{box-sizing:border-box}
@@ -114,6 +114,50 @@
       border-radius:12px;
     }
 
+    .gallery-shell{padding:20px;border:1px solid rgba(56,189,248,.18);border-radius:20px;background:linear-gradient(180deg, rgba(18,26,43,.95), rgba(18,26,43,.82));box-shadow:0 18px 40px rgba(0,0,0,.26)}
+    .gallery-actions{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin:12px 0 16px}
+    .gallery-grid{column-count:3;column-gap:14px}
+    @media (max-width:900px){.gallery-grid{column-count:2}}
+    @media (max-width:620px){.gallery-grid{column-count:1}}
+    .photo-card{break-inside:avoid;margin:0 0 14px;border:1px solid rgba(56,189,248,.18);border-radius:16px;overflow:hidden;
+      background:linear-gradient(180deg, rgba(18,26,43,.95), rgba(18,26,43,.78));transition:transform .22s ease, box-shadow .22s ease}
+    .photo-card:hover{transform:translateY(-2px);box-shadow:0 14px 28px rgba(0,0,0,.32)}
+    .photo-img{display:block;width:100%;height:auto}
+    .photo-meta{padding:11px 12px 12px}
+    .photo-author{margin:0;font-weight:700}
+    .photo-comment{margin:6px 0 0;color:var(--muted)}
+    .photo-date{margin:8px 0 0;font-size:12px;color:#94a9da}
+    .photo-delete-btn{margin-top:10px;background:rgba(239,68,68,.16);border-color:rgba(239,68,68,.48);color:#fee2e2}
+    .photo-delete-btn:hover{background:rgba(239,68,68,.26)}
+    .gallery-state{display:flex;align-items:center;gap:10px;color:var(--muted);min-height:34px}
+    .spinner{width:20px;height:20px;border-radius:999px;border:2px solid rgba(184,196,230,.25);border-top-color:var(--accent);animation:spin .8s linear infinite}
+    @keyframes spin{to{transform:rotate(360deg)}}
+
+    .modal{position:fixed;inset:0;background:rgba(4,8,18,.72);backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;padding:20px;z-index:40}
+    .modal[hidden]{display:none}
+    .modal-card{width:min(560px,100%);max-height:88vh;overflow:auto;background:linear-gradient(180deg, rgba(18,26,43,.98), rgba(18,26,43,.92));
+      border:1px solid rgba(56,189,248,.26);border-radius:18px;padding:16px}
+    .modal-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:10px}
+    .xbtn{border:none;background:transparent;color:var(--muted);font-size:22px;line-height:1;cursor:pointer;padding:2px 6px;border-radius:8px}
+    .xbtn:hover{background:rgba(255,255,255,.08);color:#fff}
+    .checkbox-row{display:flex;align-items:flex-start;gap:10px;margin-top:10px}
+    .checkbox-row input{width:auto;margin-top:3px}
+    .checkbox-row label{font-size:14px;color:var(--txt)}
+    .progress-wrap{margin-top:12px}
+    .progress-wrap progress{width:100%;height:10px;accent-color:var(--accent)}
+    .progress-meta{display:flex;justify-content:space-between;align-items:center;font-size:12px;color:var(--muted);margin-top:4px}
+    .modal-open{overflow:hidden}
+    .album-hero-title{font-size:clamp(34px,5vw,56px)}
+    .album-tag{display:inline-flex;align-items:center;gap:8px;padding:7px 12px;border-radius:999px;background:rgba(56,189,248,.12);border:1px solid rgba(56,189,248,.24);color:var(--txt);font-size:13px;font-weight:700;letter-spacing:.2px;margin-bottom:14px}
+    .admin-banner{margin:0 0 12px;padding:10px 12px;border-radius:12px;border:1px solid rgba(250,204,21,.46);background:rgba(250,204,21,.12);color:#fde68a;font-size:13px;font-weight:700}
+    .album-cta{padding:14px 18px;font-size:16px;border-radius:14px}
+    .thanks-card{background:linear-gradient(135deg, rgba(56,189,248,.14), rgba(18,26,43,.92));border:1px solid rgba(56,189,248,.2)}
+    .thanks-card p{margin:8px 0 0;color:var(--muted)}
+
+    [hidden] {
+    display: none !important;
+  }
+
     footer{padding:18px 0 28px;color:var(--muted);font-size:13px}
 
     @media (max-width: 700px){
@@ -126,11 +170,9 @@
 <body>
   <div class="nav">
     <div class="navin">
-      <div class="brand">🎓 35 godina mature | Bor</div>
+      <div class="brand">📚 Digitalni album Generacije '72</div>
       <div style="display:flex;gap:10px;flex-wrap:wrap">
-        <a class="btn" href="#rsvp">✅ Dolazim! (prijavljivanje)</a>
-        <a class="btn primary" href="#chat">🤖 AI redar</a>
-        <a class="btn primary" href="#moda">✨ Moda</a>
+        <a class="btn" href="#galerija">📸 Album</a>
       </div>
     </div>
   </div>
@@ -139,16 +181,15 @@
     <header class="hero">
       <div class="grid">
         <div>
-          <h1>35 godina mature - 04.07.2026.</h1>
-          <h2>Preživeli smo 90-te. Preživećemo i 35 godina mature.</h2>
-          <p class="sub">Generacija 1972 (matura 1991) • Bor • Restoran Nora Event</p>
+          <div class="album-tag">❤️ Digitalni album Generacije '72</div>
+          <h1 class="album-hero-title">Digitalni album<br />Generacije '72</h1>
+          <h2>Uspomene, fotografije i male priče koje ostaju dostupne svima.</h2>
+          <p class="sub">Bor • generacija 1972 • zajednički album za ponovno okupljanje i sećanja</p>
           <div style="display:flex;gap:10px;flex-wrap:wrap">
-            <a class="btn primary" href="#rsvp">Prijavi dolazak</a>
-            <a class="btn" href="#anegdote">Dodaj anegdotu</a>
-            <a class="btn" href="#chat">Pitaj AI redara</a>
+            <a class="btn primary album-cta" href="#galerija">Pogledaj album</a>
           </div>
           <p class="muted small" style="margin-top:12px">
-            *Sajt je javno dostupan da se svi lakše nađu. Ne objavljujemo privatne podatke.
+            *Album je javno dostupan da se svi lakše pronađu i podele uspomene. Ne objavljujemo privatne podatke.
           </p>
         </div>
 
@@ -156,320 +197,78 @@
           <h2 style="margin:0 0 10px">Osnovne informacije</h2>
           <div class="kpi">
             <div class="item">
-              <div class="muted small">🗓️ Datum</div>
-              <div><b>04.07.2026.</b></div>
+              <div class="muted small">🗓️ Album</div>
+              <div><b>Žive uspomene</b></div>
             </div>
 
             <div class="item">
-              <div class="muted small">📍 Lokacija</div>
-              <div><b>Restoran Nora Event, Bor</b></div>
+              <div class="muted small">📍 Zajednica</div>
+              <div><b>Bor</b></div>
             </div>
 
             <div class="item">
-              <div class="muted small">💰 Cena karte</div>
-              <div><b>~ 6.200 RSD</b><br><span class="small muted">(zavisi od broja prijavljenih)</span></div>
+              <div class="muted small">📸 Foto album</div>
+              <div><b>Najnovije slike prve</b></div>
             </div>
 
             <div class="item">
-              <div class="muted small">📸 Fotograf</div>
-              <div><b>Novak</b><br><span class="small muted">300 RSD po slici</span></div>
+              <div class="muted small">❤️ Hvala svima</div>
+              <div><b>Na deljenju uspomena</b></div>
             </div>
           </div>
-          <p class="muted small" style="margin:10px 0 0">
-            Savet: dođi 15 minuta ranije da izbegnemo “A ti si…?” gužvu 😄
-          </p>
         </div>
       </div>
     </header>
 
-    <section class="news-item">
-
-        <h2>🎟 Karte su u prodaji</h2>
-
-        <div class="news-image">
-            <img 
-                src="karte.jpg" 
-                alt="Karte za proslavu 35 godina mature"
-                style="
-                    width: 30%;
-                    max-width: 600px;
-                    height: auto;
-                    border-radius: 10px;
-                    margin: 15px 0;
-                    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-                "
-            >
-        </div>
-
-        <p>
-            Sa zadovoljstvom obaveštavamo sve drugare iz generacije da su
-            <strong>karte za proslavu 35 godina mature zvanično u prodaji.</strong>
-        </p>
-
-        <p>
-            Karte se mogu kupiti na sledećoj lokaciji:
-        </p>
-
-        <p>
-            📍 <strong>In Focus studio</strong><br>
-            Moše Pijade 54<br>
-            Bor 19210
-        </p>
-
-        <p>
-            Požurite i obezbedite svoje mesto na vreme kako bismo lakše organizovali
-            ovaj poseban događaj.
-        </p>
-
+    <section class="section card thanks-card" id="hvala">
+      <h2>❤️ Hvala svima</h2>
+      <p>
+        Hvala svima koji su sačuvali fotografije, uspomene i priče od zaborava.
+        Ovaj album postoji zato što ste ga vi punili životom, osmesima i zajedničkim trenucima.
+      </p>
     </section>
 
-    <section class="section card" id="rsvp">
-      <h2>🎤 Hajde da se prebrojimo (da vas čujem!)</h2>
+    <section id="galerija" class="section card">
+      <h2>📸 Foto galerija</h2>
+      <p class="muted small">Najnovije fotografije su prvo prikazane. Dodaj uspomenu odmah ispod zaglavlja.</p>
+      <div class="gallery-shell">
+        <div id="adminBanner" class="admin-banner" hidden>Admin režim je aktivan. Dostupno je brisanje fotografija.</div>
+        <div class="gallery-actions">
+          <div class="small muted">Dodaj fotografiju i pomogni da zajedno sačuvamo uspomene na ovo posebno veče.</div>
+          <button class="btn primary album-cta" id="openUploadModal" type="button">➕ Dodaj fotografiju</button>
+        </div>
 
-      <div style="text-align:center;margin-bottom:20px">
+        <div id="gallerySpinner" class="gallery-state">
+          <span class="spinner" aria-hidden="true"></span>
+          <span>Učitavam galeriju...</span>
+        </div>
 
-      <img src="mim.gif" style="max-width:100px;border-radius:12px">
+        <div id="galleryEmpty" class="gallery-state" hidden>
+          <span>Još nema objavljenih fotografija. Budi prvi koji dodaje uspomenu.</span>
+        </div>
 
-      <p class="muted small">
-      "Ne mogu da vas čujem!"
-      </p>
+        <div id="galleryError" class="gallery-state" hidden>
+          <span>Galerija trenutno nije dostupna. Pokušaj ponovo za minut.</span>
+        </div>
 
+        <div id="galleryGrid" class="gallery-grid" aria-live="polite"></div>
       </div>
-      
-      <p class="muted small">Ne kupujete kartu ovde - samo da vidimo koliko nas okvirno dolazi. Karte će biti kod fotografa Novaka.</p>
-
-      <form id="rsvpForm">
-        <div class="row">
-          <div>
-            <label>Ime i prezime</label>
-            <input name="name" required placeholder="npr. Marko Marković" />
-          </div>
-          <div>
-            <label>Škola</label>
-            <select name="school" required>
-              <option value="">Izaberi školu</option>
-              <option value="PM">Prirodno-matematička škola</option>
-              <option value="EM">Elektro-mašinska škola</option>
-              <option value="PB">Pravno-birotehnička škola</option>
-              <option value="EK">Ekonomska škola</option>
-              <option value="RM">Rudarsko-metalurška škola</option>
-              <option value="OSTALO">Ostalo</option>
-            </select>
-          </div>
-
-          <div>
-          <label>Stepen</label>
-          <select name="degree" required>
-          <option value="">Izaberi</option>
-          <option value="III">III stepen</option>
-          <option value="IV">IV stepen</option>
-          </select>
-          </div>
-
-          <div>
-          <label>Odeljenje</label>
-          <select name="class_number" required>
-          <option value="">Izaberi</option>
-          <option>1</option>
-          <option>2</option>
-          <option>3</option>
-          <option>4</option>
-          <option>5</option>
-          <option>6</option>
-          <option>7</option>
-          <option>8</option>
-          <option>9</option>
-          <option>10</option>
-          </select>
-          </div>
-          
-          <div>
-            <label>Dolazim</label>
-            <select name="coming" required>
-              <option value="YES">Da</option>
-              <option value="MAYBE">Možda</option>
-              <option value="NO">Ne</option>
-            </select>
-          </div>
-        </div>
-        <div class="row" style="margin-top:10px">
-          <div>
-            <label>Broj osoba (uključujući tebe)</label>
-            <input name="guests_count" type="number" min="1" value="1" />
-          </div>
-          <div>
-            <label>Napomena (opciono)</label>
-            <input name="note" placeholder="npr. stižem malo kasnije" />
-          </div>
-        </div>
-        <div style="margin-top:12px;display:flex;gap:10px;flex-wrap:wrap">
-          <button class="btn primary" type="submit">✅ Evidentiraj me</button>
-          <span id="rsvpStatus" class="small muted"></span>
-        </div>
-      </form>
     </section>
 
 
     <section class="section">
-    <h2>🎵 Hit dana</h2>
-    <p>Pesma koja nas vraća u vreme mature.</p>
-    <div class="video-wrapper">
-    <iframe 
-    src="https://www.youtube.com/embed/pldDuqnPP1s?si=d_k_zENjWbor1g4x"
-    title="YouTube video player"
-    frameborder="0"
-    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-    referrerpolicy="strict-origin-when-cross-origin"
-    allowfullscreen>
-    </iframe>
-    </div>
-    </section>
-
-    
-      <section id="anegdota-dana" class="section card">
-      <h2>📖 Anegdota dana</h2>
-      <p class="muted small">
-        Prva pristigla anegdota iz školskih dana.
-      </p>
-
-      <blockquote style="margin:16px 0 0; padding:16px 20px; border-left:4px solid rgba(56,189,248,.7); background:rgba(255,255,255,.03); border-radius:10px; font-style:italic;">
-        „Grujice, kakve su ti to nove cipele sa metalnim pločicama, jel' to kad ideš kod Stošana u Zlot da šutiraš besne piliće?“
-        <br><br>
-        <span style="font-style:normal; color:#b8c4e6;">
-          - pok. prof. Veljković, Sociologija i društvo
-        </span>
-      </blockquote>
-      </section>
-
-    <section class="section card" id="karte">
-      <h2>🎟️ Kupovina karata</h2>
-      <p>
-        Karte će biti u prodaji kod fotografa <b>Novaka</b>.
-        Obavestićemo kada budu dostupne.
-      </p>
-      <p class="muted small">
-        Pozivnica važi za 3. i 4. stepen. Javite dalje koga znate.
-      </p>
-    </section>
-
-    <section class="section card" id="kontakt">
-      <h2>📞 Prijava kod organizatora</h2>
-      <ul>
-        <li><b>Violeta Šćekić</b> – Prirodno-matematička škola</li>
-        <li><b>Vesna Jakšić</b> – Prirodno-matematička škola</li>
-        <li><b>Kristina Tina Tojagić</b> – Elektro-mašinska škola</li>
-        <li><b>Sanja Protić</b> – Pravno-birotehnička škola</li>
-        <li><b>Jasna Tomić</b> – Ekonomska škola</li>
-        <li><b>Sanja Cirak</b> – Rudarsko-metalurška škola</li>
-      </ul>
-
-      <p class="muted small">
-        Javite ako smo nešto ispustile. Obavestite ljude koji nisu u grupi.
-      </p>
-    </section>
-
-    <section class="section card" id="program">
-      <h2>Program večeri</h2>
-      <ul>
-        <li>🍽️ Osnovni meni (piće neograničeno)</li>
-        <li>🎤 Bend Boemi (Zaječar)</li>
-        <li>🎸 Bada Bing Band (Majdanpek)</li>
-        <li>📸 Fotograf Novak (slike 300 RSD po komadu)</li>
-      </ul>
-    </section>
-
-    <section class="section grid">
-      <div class="card">
-        <h2>Garderoba</h2>
-        <p class="muted">Smart casual / elegantno opušteno. Udobna obuća je pametnija od ponosa.</p>
-        <ul>
-          <li>✅ Sako + košulja / lepa bluza</li>
-          <li>✅ Udobno, ali svečano</li>
-          <li>❌ Sako iz ’91 (ako ima tragove naftalina — ne rizikuj)</li>
-        </ul>
+      <h2>🎵 Hit dana</h2>
+      <p>Pesma koja nas vraća u vreme mature.</p>
+      <div class="video-wrapper">
+        <iframe 
+          src="https://www.youtube.com/embed/pldDuqnPP1s?si=d_k_zENjWbor1g4x"
+          title="YouTube video player"
+          frameborder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          referrerpolicy="strict-origin-when-cross-origin"
+          allowfullscreen>
+        </iframe>
       </div>
-      <div class="card">
-        <h2>Piće & hrana</h2>
-        <p class="muted">Predlog “Nostalgija paketa”: vino + mineralna + priča koja počinje sa “Sećaš li se kad…”.</p>
-        <ul>
-          <li>🍷 Vino / pivo / bezalkoholno</li>
-          <li>🥃 Rakijica (odgovorno)</li>
-          <li>🍰 Desert (inflacija porcije, ali ne i raspoloženja)</li>
-        </ul>
-      </div>
-    </section>
-
-    <section id="moda" class="section">
-
-      <h2>✨ Modni predlozi za proslavu</h2>
-
-      <div class="glass fashion-grid">
-
-      <div class="card">
-      <h3>👗 Za nju</h3>
-
-      <img 
-      src="fashion-w-10.png"
-      style="width:100%; border-radius:10px; margin-bottom:10px">
-
-      <p>
-        Tamni sako sa naglašenim strukom i dekorativnim vezom u kombinaciji sa duboko crvenom suknjom stvara dramatičan i elegantan izgled. Ovaj stil odiše samopouzdanjem i umetničkim senzibilitetom, savršen za svečane prilike gde želite da ostavite snažan utisak. Inspirisan modom Jean Paul Gaultier, ovaj outfit spaja klasičnu formu i modernu smelost.
-      </p>
-      </div>
-
-
-      <div class="card">
-      <h3>👔 Za njega</h3>
-
-      <img 
-      src="fashion-m-10.png"
-      style="width:100%; border-radius:10px; margin-bottom:10px">
-
-      <p>
-        Kombinacija prugaste majice, upečatljivog sakoa i tradicionalnog kilta predstavlja smeli modni izbor za one koji vole da eksperimentišu sa stilom. Ovaj izgled slavi individualnost, kreativnost i slobodu izražavanja, uz dozu šarma i razigranosti. Inspirisan estetikom Jean Paul Gaultier, ovaj outfit pokazuje da moda može biti i zabavna i autentična.
-      </p>
-      </div>
-
-      </div>
-
-    </section>
-
-    <section class="section card" id="anegdote">
-      <h2>Dodaj anegdotu (za bota i za arhivu)</h2>
-      <p class="muted small">Ako želiš da se objavi javno, označi “DA”. Bez ličnih podataka trećih lica, molim 😄</p>
-
-      <form id="anecdoteForm">
-        <div class="row">
-          <div>
-            <label>Tvoje ime</label>
-            <input name="author" required placeholder="npr. Jelena" />
-          </div>
-          <div>
-            <label>Da li sme javno?</label>
-            <select name="allowed_public" required>
-              <option value="YES">DA</option>
-              <option value="NO">NE (samo organizatori)</option>
-            </select>
-          </div>
-        </div>
-        <div style="margin-top:10px">
-          <label>Anegdota</label>
-          <textarea name="text" required rows="4" placeholder="npr. ekskurzija, kontrolni, provala..." ></textarea>
-        </div>
-        <div style="margin-top:12px;display:flex;gap:10px;flex-wrap:wrap">
-          <button class="btn" type="submit">📚 Sačuvaj anegdotu</button>
-          <span id="anecdoteStatus" class="small muted"></span>
-        </div>
-      </form>
-    </section>
-
-    <section class="section card" id="faq">
-      <h2>FAQ</h2>
-      <ul>
-        <li><b>Da li je sajt javan?</b> Da — da se svi lakše pronađu.</li>
-        <li><b>Moram li da ostavim telefon?</b> Ne.</li>
-        <li><b>Biće muzike iz ’90-ih?</b> Hoće. I biće “ona pesma”.</li>
-      </ul>
     </section>
 
     <section class="section card" id="muzika">
@@ -490,153 +289,62 @@
     </div>
   </section>
 
-    <section class="section card" id="chat">
-      <h2>🤖 AI redar</h2>
-      <p class="muted small">
-        Pitaj za program, bendove, cenu karte, fotografa ili traži neku anegdotu iz školskih dana.
-      </p>
-      <div class="chatbox">
-        <div class="chatlog" id="chatLog"></div>
-        <div class="row">
-          <input id="chatInput" placeholder="Npr. ‘Šta da obučem?’" />
-          <button class="btn primary" id="chatSend">Pošalji</button>
-        </div>
-        <div id="chatStatus" class="small muted"></div>
-      </div>
-    </section>
-
     <footer>
-      © Generacija ’72 / matura ’91 — Bor • Napravljeno s ljubavlju i malo AI-a 😄
+      Vidimo se ponovo 2031. ❤️
     </footer>
   </div>
 
+  <div id="uploadModal" class="modal" hidden>
+    <div class="modal-card">
+      <div class="modal-head">
+        <h3 style="margin:0">Dodaj fotografiju u album</h3>
+        <button class="xbtn" id="closeUploadModal" type="button" aria-label="Zatvori">×</button>
+      </div>
+
+      <form id="photoUploadForm">
+        <div class="row">
+          <div>
+            <label for="photoAuthor">Ime</label>
+            <input id="photoAuthor" name="author" required maxlength="120" placeholder="npr. Miodrag" />
+          </div>
+          <div>
+            <label for="photoFile">Fotografija</label>
+            <input id="photoFile" name="photo" required type="file" accept="image/jpeg,image/png,image/webp" />
+          </div>
+        </div>
+
+        <div style="margin-top:10px">
+          <label for="photoComment">Komentar (opciono)</label>
+          <textarea id="photoComment" name="comment" rows="3" maxlength="500" placeholder="npr. Odlična atmosfera!"></textarea>
+        </div>
+
+        <div class="checkbox-row">
+          <input id="photoConsent" name="consent" value="true" type="checkbox" required />
+          <label for="photoConsent">I confirm that I have permission to publish this photo.</label>
+        </div>
+
+        <div id="uploadProgressWrap" class="progress-wrap" hidden>
+          <progress id="uploadProgressBar" max="100" value="0"></progress>
+          <div class="progress-meta">
+            <span>Napredak slanja</span>
+            <span id="uploadProgressText">0%</span>
+          </div>
+        </div>
+
+        <div style="display:flex;gap:10px;margin-top:14px;flex-wrap:wrap">
+          <button id="uploadSubmit" class="btn primary" type="submit">⬆ Upload</button>
+          <button id="uploadCancel" class="btn" type="button">Otkaži</button>
+          <span id="uploadStatus" class="small muted"></span>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="/photo-gallery.js" defer></script>
+
   <script>
-    // 1) ZAMENI OVE URL-ove (n8n webhook endpoints)
-    const RSVP_WEBHOOK_URL = "/api/rsvp";
-    const CHAT_WEBHOOK_URL = "/api/chat";
-    const ANECDOTE_WEBHOOK_URL = "/api/anegdote";
-
-    // (opciono) session id za chat
-    const sessionId = Math.random().toString(36).slice(2);
-
-    const schoolOrganizers = {
-      PM: "Violeta Šćekić ili Vesna Jakšić",
-      EM: "Kristina Tina Tojagić",
-      PB: "Sanja Protić",
-      EK: "Jasna Tomić",
-      RM: "Sanja Cirak"
-    };
-
     const $ = (id) => document.getElementById(id);
 
-    function addMsg(who, text){
-      const wrap = document.createElement("div");
-      wrap.className = "msg";
-      wrap.innerHTML = `<b>${who}</b><div>${escapeHtml(text).replace(/\n/g,"<br>")}</div>`;
-      $("chatLog").appendChild(wrap);
-      $("chatLog").scrollTop = $("chatLog").scrollHeight;
-    }
-
-    function escapeHtml(s){
-      return s.replace(/[&<>"']/g, (c)=>({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c]));
-    }
-
-    // Init chat welcome
-    addMsg("AI redar", "Dobro došao/la! 😊 Pitaj me za program, bendove, cenu karte ili fotografisanje.");
-
-// RSVP submit
-$("rsvpForm").addEventListener("submit", async (e)=>{
-  e.preventDefault();
-
-  $("rsvpStatus").textContent = "Šaljem...";
-
-  // 1️⃣ prvo uzmi podatke
-  const data = Object.fromEntries(new FormData(e.target).entries());
-
-  try{
-    const res = await fetch(RSVP_WEBHOOK_URL, {
-      method:"POST",
-      headers:{"Content-Type":"application/json"},
-      body: JSON.stringify(data)
-    });
-
-    if(!res.ok) throw new Error("RSVP nije prošao.");
-
-    // 2️⃣ tek sada prikaži organizatora
-    const organizer = schoolOrganizers[data.school] || "organizatoru";
-
-    $("rsvpStatus").innerHTML = 
-      `Upisano ✅<br>
-        Za više detalja obrati se: <b>${organizer}</b>`;
-
-    e.target.reset();
-
-  }catch(err){
-    $("rsvpStatus").textContent = "Greška ❌ Pokušaj ponovo.";
-  }
-});
-
-// Anecdote submit
-    $("anecdoteForm").addEventListener("submit", async (e)=>{
-      e.preventDefault();
-      $("anecdoteStatus").textContent = "Šaljem...";
-      const data = Object.fromEntries(new FormData(e.target).entries());
-
-      try{
-        const res = await fetch(ANECDOTE_WEBHOOK_URL, {
-          method:"POST",
-          headers:{"Content-Type":"application/json"},
-          body: JSON.stringify(data)
-        });
-        if(!res.ok) throw new Error("Anegdota nije sačuvana.");
-        $("anecdoteStatus").textContent = "Sačuvano ✅";
-        e.target.reset();
-      }catch(err){
-        $("anecdoteStatus").textContent = "Greška ❌ Pokušaj ponovo.";
-      }
-    });
-
-    // Chat send
-    async function sendChat(){
-    const input = $("chatInput");
-    const message = input.value.trim();
-    if(!message) return;
-
-    input.value = "";
-    addMsg("Ti", message);
-    $("chatStatus").textContent = "Redar proverava ko je prisutan...";
-
-    try{
-        const res = await fetch(CHAT_WEBHOOK_URL, {
-        method:"POST",
-        headers:{
-            "Content-Type":"application/json"
-        },
-        body: JSON.stringify({ message, sessionId })
-        });
-
-        console.log("Status:", res.status);
-
-        const text = await res.text();
-        console.log("Raw response:", text);
-
-        if(!res.ok){
-        throw new Error("HTTP error " + res.status);
-        }
-
-        const json = JSON.parse(text);
-        addMsg("AI redar", json.reply || "Nisam dobio validan odgovor 😄");
-        $("chatStatus").textContent = "";
-
-    }catch(err){
-        console.error("Chat error:", err);
-        addMsg("AI redar", "Ups - trenutno sam na hodniku 😄 Probaj opet za minut.");
-        $("chatStatus").textContent = "";
-    }
-    }
-
-    $("chatSend").addEventListener("click", sendChat);
-    $("chatInput").addEventListener("keydown", (e)=>{ if(e.key==="Enter") sendChat(); });
   </script>
 </body>
 </html>

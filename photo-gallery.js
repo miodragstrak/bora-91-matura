@@ -16,11 +16,28 @@
   const uploadStatus = document.getElementById("uploadStatus");
   const uploadButton = document.getElementById("uploadSubmit");
   const adminBanner = document.getElementById("adminBanner");
+  const body = document.body;
 
   const adminToken = new URLSearchParams(window.location.search).get("admin") || "";
   const isAdminMode = Boolean(adminToken);
 
   let activeGalleryRequestId = 0;
+  let galleryPhotos = [];
+  let activePhotoIndex = -1;
+
+  const lightbox = {
+    element: null,
+    panel: null,
+    counter: null,
+    image: null,
+    author: null,
+    comment: null,
+    date: null,
+    prevButton: null,
+    nextButton: null,
+    closeButton: null,
+    isOpen: false
+  };
 
   function escapeHtml(value) {
     return String(value || "").replace(/[&<>"']/g, function (char) {
@@ -49,6 +66,223 @@
       hour: "2-digit",
       minute: "2-digit"
     });
+  }
+
+  function getPhotoImageSrc(photo) {
+    return photo?.imageUrl || (photo?.file ? `/photos/${encodeURIComponent(photo.file)}` : "");
+  }
+
+  function getPhotoAlt(photo) {
+    return photo?.comment
+      ? `Fotografija: ${photo.comment}`
+      : `Fotografija autora ${photo?.author || "Nepoznato"}`;
+  }
+
+  function getPhotoCounterText(index) {
+    return `Photo ${index + 1} / ${galleryPhotos.length}`;
+  }
+
+  function isUploadModalOpen() {
+    return Boolean(uploadModal && !uploadModal.hidden && uploadModal.classList.contains("is-open"));
+  }
+
+  function syncBodyScrollLock() {
+    body.classList.toggle("modal-open", isUploadModalOpen() || lightbox.isOpen);
+  }
+
+  function ensureLightbox() {
+    if (lightbox.element) {
+      return lightbox;
+    }
+
+    const overlay = document.createElement("div");
+    overlay.className = "lightbox";
+    overlay.hidden = true;
+    overlay.setAttribute("role", "dialog");
+    overlay.setAttribute("aria-modal", "true");
+    overlay.setAttribute("aria-label", "Pregled fotografije");
+
+    const panel = document.createElement("div");
+    panel.className = "lightbox-panel";
+
+    const header = document.createElement("div");
+    header.className = "lightbox-header";
+
+    const counter = document.createElement("div");
+    counter.className = "lightbox-counter";
+
+    const closeButton = document.createElement("button");
+    closeButton.type = "button";
+    closeButton.className = "lightbox-close";
+    closeButton.setAttribute("aria-label", "Zatvori pregled fotografije");
+    closeButton.textContent = "×";
+
+    header.appendChild(counter);
+    header.appendChild(closeButton);
+
+    const stage = document.createElement("div");
+    stage.className = "lightbox-stage";
+
+    const prevButton = document.createElement("button");
+    prevButton.type = "button";
+    prevButton.className = "lightbox-nav lightbox-nav-prev";
+    prevButton.setAttribute("aria-label", "Prethodna fotografija");
+    prevButton.textContent = "‹";
+
+    const imageWrap = document.createElement("div");
+    imageWrap.className = "lightbox-image-wrap";
+
+    const image = document.createElement("img");
+    image.className = "lightbox-image";
+    image.alt = "";
+    imageWrap.appendChild(image);
+
+    const nextButton = document.createElement("button");
+    nextButton.type = "button";
+    nextButton.className = "lightbox-nav lightbox-nav-next";
+    nextButton.setAttribute("aria-label", "Sledeća fotografija");
+    nextButton.textContent = "›";
+
+    stage.appendChild(prevButton);
+    stage.appendChild(imageWrap);
+    stage.appendChild(nextButton);
+
+    const meta = document.createElement("div");
+    meta.className = "lightbox-meta";
+
+    const author = document.createElement("p");
+    author.className = "lightbox-author";
+
+    const comment = document.createElement("p");
+    comment.className = "lightbox-comment";
+
+    const date = document.createElement("p");
+    date.className = "lightbox-date";
+
+    meta.appendChild(author);
+    meta.appendChild(comment);
+    meta.appendChild(date);
+
+    panel.appendChild(header);
+    panel.appendChild(stage);
+    panel.appendChild(meta);
+    overlay.appendChild(panel);
+    body.appendChild(overlay);
+
+    lightbox.element = overlay;
+    lightbox.panel = panel;
+    lightbox.counter = counter;
+    lightbox.image = image;
+    lightbox.author = author;
+    lightbox.comment = comment;
+    lightbox.date = date;
+    lightbox.prevButton = prevButton;
+    lightbox.nextButton = nextButton;
+    lightbox.closeButton = closeButton;
+
+    closeButton.addEventListener("click", closeLightbox);
+    prevButton.addEventListener("click", function (event) {
+      event.stopPropagation();
+      showPreviousPhoto();
+    });
+    nextButton.addEventListener("click", function (event) {
+      event.stopPropagation();
+      showNextPhoto();
+    });
+    stage.addEventListener("click", function (event) {
+      if (event.target === prevButton || event.target === nextButton) {
+        return;
+      }
+
+      const stageRect = stage.getBoundingClientRect();
+      const clickX = event.clientX - stageRect.left;
+
+      if (clickX < stageRect.width / 2) {
+        showPreviousPhoto();
+      } else {
+        showNextPhoto();
+      }
+    });
+    overlay.addEventListener("click", function (event) {
+      if (event.target === overlay) {
+        closeLightbox();
+      }
+    });
+
+    return lightbox;
+  }
+
+  function updateLightboxContent(photo, index) {
+    if (!photo || !lightbox.element) {
+      return;
+    }
+
+    lightbox.counter.textContent = getPhotoCounterText(index);
+    lightbox.image.src = getPhotoImageSrc(photo);
+    lightbox.image.alt = getPhotoAlt(photo);
+    lightbox.author.textContent = `Autor: ${photo.author || "Nepoznat autor"}`;
+
+    if (photo.comment) {
+      lightbox.comment.textContent = `Komentar: ${photo.comment}`;
+      lightbox.comment.hidden = false;
+    } else {
+      lightbox.comment.textContent = "";
+      lightbox.comment.hidden = true;
+    }
+
+    lightbox.date.textContent = `Datum objave: ${formatDate(photo.uploaded) || "Nepoznat datum"}`;
+  }
+
+  function openLightbox(index) {
+    if (!galleryPhotos.length || index < 0 || index >= galleryPhotos.length) {
+      return;
+    }
+
+    ensureLightbox();
+    activePhotoIndex = index;
+    updateLightboxContent(galleryPhotos[index], index);
+
+    lightbox.element.hidden = false;
+    lightbox.element.classList.add("is-open");
+    lightbox.isOpen = true;
+    syncBodyScrollLock();
+  }
+
+  function closeLightbox() {
+    if (!lightbox.element) {
+      return;
+    }
+
+    lightbox.element.classList.remove("is-open");
+    lightbox.element.hidden = true;
+    lightbox.isOpen = false;
+    syncBodyScrollLock();
+  }
+
+  function showPhotoAt(index) {
+    if (!galleryPhotos.length) {
+      return;
+    }
+
+    const nextIndex = (index + galleryPhotos.length) % galleryPhotos.length;
+    activePhotoIndex = nextIndex;
+    updateLightboxContent(galleryPhotos[nextIndex], nextIndex);
+  }
+
+  function showPreviousPhoto() {
+    if (!lightbox.isOpen) {
+      return;
+    }
+
+    showPhotoAt(activePhotoIndex - 1);
+  }
+
+  function showNextPhoto() {
+    if (!lightbox.isOpen) {
+      return;
+    }
+
+    showPhotoAt(activePhotoIndex + 1);
   }
 
   function showGalleryState(state) {
@@ -105,18 +339,21 @@
     }
   }
 
-  function createPhotoCard(photo) {
+  function createPhotoCard(photo, photoIndex) {
     const card = document.createElement("article");
     card.className = "photo-card";
+    card.dataset.photoIndex = String(photoIndex);
 
     const image = document.createElement("img");
     image.className = "photo-img";
     image.loading = "lazy";
     image.decoding = "async";
-    image.alt = photo.comment
-      ? `Fotografija: ${photo.comment}`
-      : `Fotografija autora ${photo.author || "Nepoznato"}`;
-    image.src = photo.imageUrl || (photo.file ? `/photos/${encodeURIComponent(photo.file)}` : "");
+    image.alt = getPhotoAlt(photo);
+    image.src = getPhotoImageSrc(photo);
+    image.classList.add("photo-img-clickable");
+    image.addEventListener("click", function () {
+      openLightbox(photoIndex);
+    });
 
     const meta = document.createElement("div");
     meta.className = "photo-meta";
@@ -203,14 +440,19 @@
         return;
       }
 
-      if (!Array.isArray(photos) || photos.length === 0) {
+      galleryPhotos = Array.isArray(photos) ? photos : [];
+
+      if (galleryPhotos.length === 0) {
         showGalleryState("empty");
+        if (lightbox.isOpen) {
+          closeLightbox();
+        }
         return;
       }
 
       const fragment = document.createDocumentFragment();
-      photos.forEach(function (photo) {
-        fragment.appendChild(createPhotoCard(photo));
+      galleryPhotos.forEach(function (photo, index) {
+        fragment.appendChild(createPhotoCard(photo, index));
       });
 
       galleryGrid.appendChild(fragment);
@@ -229,7 +471,7 @@
 
     uploadModal.hidden = false;
     uploadModal.classList.add("is-open");
-    document.body.classList.add("modal-open");
+    syncBodyScrollLock();
   }
 
   function closeModal() {
@@ -237,7 +479,7 @@
 
     uploadModal.classList.remove("is-open");
     uploadModal.hidden = true;
-    document.body.classList.remove("modal-open");
+    syncBodyScrollLock();
   }
 
   function resetUploadState() {
@@ -368,6 +610,25 @@
     }
 
     document.addEventListener("keydown", function (event) {
+      if (lightbox.isOpen) {
+        if (event.key === "Escape") {
+          closeLightbox();
+          return;
+        }
+
+        if (event.key === "ArrowLeft") {
+          event.preventDefault();
+          showPreviousPhoto();
+          return;
+        }
+
+        if (event.key === "ArrowRight") {
+          event.preventDefault();
+          showNextPhoto();
+          return;
+        }
+      }
+
       if (event.key === "Escape" && uploadModal && uploadModal.classList.contains("is-open")) {
         closeModal();
       }
